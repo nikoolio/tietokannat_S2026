@@ -1,0 +1,41 @@
+Käytetyt komennot:
+CREATE TABLE owner (ownerID int PRIMARY KEY AUTO_INCREMENT, first_name varchar(255), last_name varchar(255), address varchar(255));
+ALTER TABLE pet ADD COLUMN petID INT PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE pet ADD COLUMN ownerID INT;
+ALTER TABLE pet ADD CONSTRAINT FOREIGN KEY(ownerID) REFERENCES owner(ownerID);
+
+Koska owner-taulun rakenne on eri kuin esimerkissä, pitää NULL olla eri paikassa kuin esimerkissä:
+INSERT INTO owner VALUES(NULL, 'Harold', 'Lloyd', 'Someaddress 1');
+INSERT INTO owner VALUES(NULL, 'Gwen', 'Stefani', 'Someaddress 2');
+INSERT INTO owner VALUES(NULL, 'Benny', 'Hill', 'Someaddress 3');
+INSERT INTO owner VALUES(NULL, 'Diane', 'Keaton', 'Someaddress 4');
+
+Koska owner-saraketta ei ole vielä poistettu pet-taulusta, voidaan yhdistää ownerID owner-sarakkeen arvon avulla:
+UPDATE pet SET ownerID = (SELECT ownerID FROM owner WHERE first_name = pet.owner);
+
+Nyt voidaan poistaa owner-sarake pet-taulusta:
+ALTER TABLE pet DROP column owner;
+
+DESC pet;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| name    | varchar(20) | YES  |     | NULL    |                |
+| species | varchar(20) | YES  |     | NULL    |                |
+| sex     | char(1)     | YES  |     | NULL    |                |
+| birth   | date        | YES  |     | NULL    |                |
+| death   | date        | YES  |     | NULL    |                |
+| petID   | int         | NO   | PRI | NULL    | auto_increment |
+| ownerID | int         | YES  | MUL | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+
+DESC owner;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| ownerID    | int          | NO   | PRI | NULL    | auto_increment |
+| first_name | varchar(255) | YES  |     | NULL    |                |
+| last_name  | varchar(255) | YES  |     | NULL    |                |
+| address    | varchar(255) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+

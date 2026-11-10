@@ -1,0 +1,73 @@
+a) Minkä nimisiä osastoja (Departments) Employees-tietokannassa on ?
+
+SELECT dept_name FROM departments;
++--------------------+
+| dept_name          |
++--------------------+
+| Customer Service   |
+| Development        |
+| Finance            |
+| Human Resources    |
+| Marketing          |
+| Production         |
+| Quality Management |
+| Research           |
+| Sales              |
++--------------------+
+
+b) Tulosta, (yhden kerran kukin) mitä nimikkeitä (title) tietokannassa on.
+
+SELECT DISTINCT title FROM titles;
++--------------------+
+| title              |
++--------------------+
+| Senior Engineer    |
+| Staff              |
+| Engineer           |
+| Senior Staff       |
+| Assistant Engineer |
+| Technique Leader   |
+| Manager            |
++--------------------+
+
+c) Mikä on suurin ja pienin palkka (salary) ? VIHJE: MIN, MAX. Voi olla kaksi erillistä kyselyä.
+
+SELECT MIN(salary) AS minimipalkka, MAX(salary) AS huippupalkka FROM salaries;
++--------------+--------------+
+| minimipalkka | huippupalkka |
++--------------+--------------+
+|        38623 |       158220 |
++--------------+--------------+
+
+d) Mikä on keskimääräinen palkka ?
+
+SELECT AVG(salary) AS keskipalkka FROM salaries;
++-------------+
+| keskipalkka |
++-------------+
+|  63810.7448 |
++-------------+
+
+e) Tulosta kaikki työntekijät, joiden sukunimi on Facello.
+
+SELECT first_name, last_name FROM employees WHERE last_name = 'Facello' ORDER BY first_name;
+
+f) Kuinka moni työntekijä on syntynyt 1950-luvulla ?
+
+SELECT COUNT(birth_date) AS 'Syntynyt 1950-luvulla' FROM employees WHERE birth_date LIKE '195%';
+SELECT COUNT(birth_date) AS 'Syntynyt 1950-luvulla' FROM employees WHERE birth_date BETWEEN '1950-01-01' AND '1959-12-31';
++-----------------------+
+| Syntynyt 1950-luvulla |
++-----------------------+
+|                182886 |
++-----------------------+
+
+g) Montako miestä ja montako naista työntekijöissä on ?
+
+SELECT gender, COUNT(*) AS 'Amount' FROM employees GROUP BY gender;
++--------+--------+
+| gender | Amount |
++--------+--------+
+| M      | 179973 |
+| F      | 120051 |
++--------+--------+
