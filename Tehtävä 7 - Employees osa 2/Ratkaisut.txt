@@ -1,0 +1,30 @@
+a) Tulosta kymmenen aakkosjärjestyksessä ensimmäisen työntekijän tiedot sukunimen mukaan lajiteltuna.
+SELECT * FROM employees ORDER BY last_name ASC LIMIT 10;
+
+b) Sama kuten edellä, mutta sukunimen JA etunimen mukaan lajiteltuna.
+SELECT * FROM employees ORDER BY last_name ASC, first_name ASC LIMIT 10;
+
+c) Tulosta viiden viimeksi palkatun työntekijän tiedot.
+SELECT * FROM employees ORDER BY hire_date DESC LIMIT 5;
+
+Seuraavissa tehtävissä tarvitaan tietoja useammasta kuin yhdestä taulusta (JOIN).
+
+d) Kenellä on suurin palkka ? Tulosta etunimi, sukunimi ja palkka.
+SELECT last_name, first_name, salary FROM employees JOIN salaries ON salaries.emp_no = employees.emp_no WHERE salaries.to_date ='9999-01-01' ORDER BY salaries.salary DESC LIMIT 1;
+
+e) Kenellä on pienin palkka ? Tulosta etunimi, sukunimi ja palkka.
+SELECT last_name, first_name, salary FROM employees JOIN salaries ON salaries.emp_no = employees.emp_no WHERE salaries.to_date ='9999-01-01' ORDER BY salaries.salary ASC LIMIT 1;
+
+f) Tulosta työntekijät (etunimi, sukunimi, palkka), jotka ansaitsevat yli 150000. 
+SELECT last_name, first_name, salary FROM employees JOIN salaries ON salaries.emp_no = employees.emp_no WHERE salaries.salary > 150000 AND salaries.to_date ='9999-01-01';
+
+g) Kuinka monta työntekijää työskentelee myynnissä (Sales) ? Entä markkinoinnissa (Marketing) ?
+SELECT COUNT(emp_no) FROM dept_emp JOIN departments ON departments.dept_no = dept_emp.dept_no WHERE departments.dept_name = 'Sales' AND dept_emp.to_date ='9999-01-01';
+SELECT COUNT(emp_no) FROM dept_emp JOIN departments ON departments.dept_no = dept_emp.dept_no WHERE departments.dept_name = 'Marketing' AND dept_emp.to_date ='9999-01-01';
+
+h) Tulosta kaikkien osastonjohtajien (Department Managers) etunimi, sukunimi ja osasto, jolla työskentelee.
+SELECT employees.first_name, employees.last_name, departments.dept_name FROM employees JOIN titles ON employees.emp_no = titles.emp_no JOIN dept_emp ON dept_emp.emp_no = employees.emp_no JOIN departments ON departments.dept_no = dept_emp.dept_no WHERE titles.title = 'Manager' AND titles.to_date = '9999-01-01' AND dept_emp.to_date = '9999-01-01';
+
+i) Mikä on myynnissä työskentelevien keskipalkka ? Entä markkinoinnissa ?
+SELECT AVG(salaries.salary) AS 'Myynnin keskipalkka' FROM salaries JOIN employees ON salaries.emp_no = employees.emp_no JOIN dept_emp ON dept_emp.emp_no = employees.emp_no JOIN departments ON departments.dept_no=dept_emp.dept_no WHERE departments.dept_name = 'Sales' AND salaries.to_date='9999-01-01' AND dept_emp.to_date='9999-01-01';
+SELECT AVG(salaries.salary) AS 'Myynnin keskipalkka' FROM salaries JOIN employees ON salaries.emp_no = employees.emp_no JOIN dept_emp ON dept_emp.emp_no = employees.emp_no JOIN departments ON departments.dept_no=dept_emp.dept_no WHERE departments.dept_name = 'Marketing' AND salaries.to_date='9999-01-01' AND dept_emp.to_date='9999-01-01';
