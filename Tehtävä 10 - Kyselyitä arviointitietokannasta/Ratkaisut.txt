@@ -1,0 +1,44 @@
+1) Tulosta kaikki opiskelijat, joilla on tietokannassa hylätty arvosana
+
+mysql> SELECT etunimi, sukunimi FROM opiskelija JOIN arviointi ON arviointi.idOpiskelija = opiskelija.idOpiskelija WHERE arviointi.arvosana > 0;
++---------+----------+
+| etunimi | sukunimi |
++---------+----------+
+| Aku     | Ankka    |
++---------+----------+
+
+2) Tulosta kaikki Fysiikka 3-kurssin hyväksytysti suorittaneet
+mysql> SELECT Opiskelija.etunimi, Opiskelija.sukunimi, arviointi.Arvosana, Opintojakso.nimi AS Kurssi FROM opiskelija JOIN arviointi ON arviointi.idOpiskelija = Opiskelija.idOpiskelija JOIN Opintojakso ON Opintojakso.idOpintojakso = arviointi.idOpintojakso WHERE arviointi.arvosana > 0 AND Opintojakso.Nimi = 'Fysiikka 3';
++---------+----------+----------+------------+
+| etunimi | sukunimi | Arvosana | Kurssi     |
++---------+----------+----------+------------+
+| Aku     | Ankka    |        1 | Fysiikka 3 |
++---------+----------+----------+------------+
+
+3) Mille kursseille Hessu on osallistunut?
+Vaihdoin nimeksi Roope Ankka, koska en ollut tallentanut Hessulle kursseja.
+
+mysql> SELECT Nimi AS 'ROOPEN OPINTOJAKSOT' FROM Opintojakso oj JOIN Arviointi a ON a.idOpintojakso = oj.idOpintojakso JOIN Opiskelija o ON o.idOpiskelija = a.idOpiskelija WHERE etunimi = 'Roope' AND sukunimi = 'Ankka';
++----------------------------+
+| ROOPEN OPINTOJAKSOT        |
++----------------------------+
+| Tietokannat                |
+| Liike-elämän tapatietous   |
++----------------------------+
+
+4) Mikä on Akun opintosuoritusten keskiarvo ?
+mysql> SELECT AVG(arvosana) AS 'AKUN KESKIARVO' FROM arviointi a JOIN opiskelija o ON a.idOpiskelija = o.idOpiskelija WHERE o.etunimi = 'Aku' AND o.sukunimi = 'Ankka';
++----------------+
+| AKUN KESKIARVO |
++----------------+
+|         0.6667 |
++----------------+
+
+5) Millä opintojaksoilla ei ole yhtään suoritusmerkintää ?
+mysql> SELECT nimi FROM Opintojakso o LEFT JOIN arviointi a ON a.idOpintojakso = o.idOpintojakso WHERE arvosana IS NULL;
++-------------------------+
+| nimi                    |
++-------------------------+
+| Elektroniikan perusteet |
+| Matematiikka 2          |
++-------------------------+
