@@ -1,0 +1,45 @@
+SELECT * FROM Opiskelija;
++--------------+---------+----------+----------------+-----------------------------+
+| idOpiskelija | Etunimi | Sukunimi | Osoite         | Luokkatunnus_idLuokkatunnus |
++--------------+---------+----------+----------------+-----------------------------+
+|            1 | Aku     | Ankka    | Ankkalinna 313 |                           1 |
+|            2 | Roope   | Ankka    | Rahasäiliö     |                           2 |
+|            3 | Mikki   | Hiiri    | Ankkalinna 321 |                           2 |
+|            4 | Hessu   | Hopo     | Ankkalinna 321 |                           1 |
+|            5 | Iines   | Ankka    | Ankkalinna 221 |                           1 |
++--------------+---------+----------+----------------+-----------------------------+
+
+SELECT * FROM Opintojakso;
++---------------+----------------------------+---------+--------+
+| idOpintojakso | Nimi                       | Laajuus | Koodi  |
++---------------+----------------------------+---------+--------+
+|             1 | Tietokannat                |       3 | T20041 |
+|             2 | Liike-elämän tapatietous   |       3 | T20042 |
+|             3 | Fysiikka 3                 |       3 | T20043 |
+|             4 | Elektroniikan perusteet    |       6 | T20044 |
+|             5 | Kellarihumppa              |       5 | T20045 |
+|             6 | Matematiikka 2             |       3 | T20046 |
+|             7 | Ruotsi                     |       3 | T20047 |
+|             8 | Python                     |       3 | T20048 |
++---------------+----------------------------+---------+--------+
+
+SELECT * FROM Luokkatunnus;
++----------------+----------+
+| idLuokkatunnus | Tunnus   |
++----------------+----------+
+|              1 | TVT26KMO |
+|              2 | TVT26SPL |
++----------------+----------+
+
+SELECT opiskelija.etunimi, opiskelija.sukunimi, arviointi.arvosana, arviointi.päivämäärä, opintojakso.nimi FROM Arviointi JOIN Opiskelija ON Opiskelija.idOpiskelija = Arviointi.idOpiskelija JOIN Opintojakso ON Opintojakso.idOpintojakso = Arviointi.idOpintojakso;
++---------+----------+----------+-----------------+----------------------------+
+| etunimi | sukunimi | arvosana | päivämäärä      | nimi                       |
++---------+----------+----------+-----------------+----------------------------+
+| Aku     | Ankka    |        1 | 2026-11-12      | Tietokannat                |
+| Aku     | Ankka    |        1 | 2026-11-12      | Fysiikka 3                 |
+| Aku     | Ankka    |        0 | 2026-11-12      | Ruotsi                     |
+| Roope   | Ankka    |        4 | 2026-11-12      | Tietokannat                |
+| Roope   | Ankka    |        2 | 2026-11-12      | Liike-elämän tapatietous   |
+| Mikki   | Hiiri    |        5 | 2026-11-12      | Kellarihumppa              |
+| Iines   | Ankka    |        3 | 2026-11-12      | Python                     |
++---------+----------+----------+-----------------+----------------------------+
