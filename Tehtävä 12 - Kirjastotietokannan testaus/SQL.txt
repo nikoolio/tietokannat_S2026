@@ -1,0 +1,93 @@
+mysql> INSERT INTO asiakas values(NULL, 'Kalle', 'Kalamies', 'Kalastajankatu 4', '0401122334', 'testiosoite@domain.com', '111166-445A');
+select * from asiakas;
++-----------+---------+----------+------------------+------------+------------------------+-------------+
+| asiakasId | Etunimi | Sukunimi | Osoite           | Puhnro     | Email                  | hetu        |
++-----------+---------+----------+------------------+------------+------------------------+-------------+
+|         1 | Kalle   | Kalamies | Kalastajankatu 4 | 0401122334 | testiosoite@domain.com | 111166-445A |
++-----------+---------+----------+------------------+------------+------------------------+-------------+
+
+mysql> INSERT INTO tekijä VALUES(NULL, 'Väinö', 'Linna');
+mysql> INSERT INTO tekijä VALUES(NULL, 'Magdalena', 'Hai');
+mysql> INSERT INTO tekijä VALUES(NULL, 'Teemu', 'Juhani');
+mysql> INSERT INTO tekijä VALUES(NULL, 'Ville', 'Mäkipelto');
+mysql> INSERT INTO tekijä VALUES(NULL, 'Paavo', 'Huotari');
+mysql> SELECT * FROM tekijä;
++-----------+-----------+------------+
+| tekijäId  | Etunimi   | Sukunimi   |
++-----------+-----------+------------+
+|         1 | Väinö     | Linna      |
+|         2 | Magdalena | Hai        |
+|         3 | Teemu     | Juhani     |
+|         4 | Ville     | Mäkipelto  |
+|         5 | Paavo     | Huotari    |
++-----------+-----------+------------+
+
+mysql> INSERT INTO teos VALUES (NULL, 'Neiti Kymenen ihmeellinen talo', '2020', 'suomi');
+mysql> INSERT INTO teos VALUES (NULL, 'Tuntematon Sotilas', '1954', 'suomi');
+mysql> INSERT INTO teos VALUES (NULL, 'Sensuroitu', '2023', 'suomi');
+mysql> SELECT * FROM teos;
++--------+--------------------------------+--------------------+------------+
+| TeosId | TeosNimi                       | AlkupJulkaisuvuosi | AlkupKieli |
++--------+--------------------------------+--------------------+------------+
+|      1 | Neiti Kymenen ihmeellinen talo |               2020 | suomi      |
+|      2 | Tuntematon Sotilas             |               1954 | suomi      |
+|      3 | Sensuroitu                     |               2023 | suomi      |
++--------+--------------------------------+--------------------+------------+
+
+mysql> INSERT INTO kirja VALUES(NULL, 1, 1);
+mysql> INSERT INTO kirja VALUES(NULL, 2, 2);
+mysql> INSERT INTO kirja VALUES(NULL, 2, 3);
+mysql> INSERT INTO kirja VALUES(NULL, 2, 2);
+mysql> INSERT INTO kirja VALUES(NULL, 2, 3);
+mysql> INSERT INTO kirja VALUES(NULL, 2, 2);
+mysql> INSERT INTO kirja VALUES(NULL, 1, 1);
+mysql> INSERT INTO kirja VALUES(NULL, 1, 1);
+
+mysql> SELECT * FROM kirja;
++---------+------------+--------+
+| idKirja | sijaintiId | TeosId |
++---------+------------+--------+
+|       1 |          1 |      1 |
+|       2 |          2 |      2 |
+|       3 |          2 |      3 |
+|       4 |          2 |      2 |
+|       5 |          2 |      3 |
+|       6 |          2 |      2 |
+|       7 |          1 |      1 |
+|       8 |          1 |      1 |
++---------+------------+--------+
+
+mysql> SELECT * FROM roolit;
++---------+-------------+
+| RooliId | RooliNimi   |
++---------+-------------+
+|       1 | kirjoittaja |
+|       2 | kuvittaja   |
++---------+-------------+
+
+mysql> INSERT INTO teostekijä VALUES(1, 2, 1);
+mysql> INSERT INTO teostekijä VALUES(1, 3, 2);
+mysql> INSERT INTO teostekijä VALUES(2, 1, 1);
+mysql> INSERT INTO teostekijä VALUES(3, 4, 1);
+mysql> INSERT INTO teostekijä VALUES(3, 5, 1);
+
+mysql> SELECT * FROM teostekijä;
++--------+-----------+---------+
+| TeosId | tekijäId  | RooliId |
++--------+-----------+---------+
+|      1 |         2 |       1 |
+|      1 |         3 |       2 |
+|      2 |         1 |       1 |
+|      3 |         4 |       1 |
+|      3 |         5 |       1 |
++--------+-----------+---------+
+
+mysql> INSERT INTO lainaus VALUES(NULL, CURDATE(), DATE_ADD(CURDATE(),INTERVAL 30 DAY), NULL, 1, 1);
+mysql> INSERT INTO lainaus VALUES(NULL, CURDATE(), DATE_ADD(CURDATE(),INTERVAL 30 DAY), NULL, 1, 2);
+
++-----------+------------+-------------+-----------------+-------------------+---------------+
+| lainausId | lainauspvm | eräpäivä    | palautuspäivä   | asiakas_asiakasId | Kirja_idKirja |
++-----------+------------+-------------+-----------------+-------------------+---------------+
+|         1 | 2026-11-25 | 2026-12-25  | NULL            |                 1 |             1 |
+|         2 | 2026-11-25 | 2026-12-25  | NULL            |                 1 |             2 |
++-----------+------------+-------------+-----------------+-------------------+---------------+
