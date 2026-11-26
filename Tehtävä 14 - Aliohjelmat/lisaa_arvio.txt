@@ -1,5 +1,7 @@
+-- DELIMITER-komennolla voi vaihtaa lopetusmerkin, jolloin skripti ei tökkää puolipisteeseen.
 DELIMITER //
 
+-- Aliohjelmalle annetaan oppilaan etunimi, sukunimi, kurssin koodi ja arvosana
 CREATE PROCEDURE lisaa_arvio(
     fn VARCHAR(45),
     ln VARCHAR(45),
@@ -7,34 +9,37 @@ CREATE PROCEDURE lisaa_arvio(
     arvos INT
 )
 aliohjelma: BEGIN
+    
+    -- määritellään muuttujat vertailuja varten
     DECLARE opiskID INT DEFAULT 0;
     DECLARE courseID INT DEFAULT 0;
 
-    SELECT idOpiskelija INTO opiskID
-    FROM Opiskelija
-    WHERE Etunimi = fn AND Sukunimi = ln;
+    SELECT idOpiskelija INTO opiskID FROM Opiskelija WHERE Etunimi = fn AND Sukunimi = ln;
 
+    -- Jos opiskelijaa ei löydy
     IF opiskID = 0 THEN
-        SELECT 'Opiskelijaa ei löytynyt';
-        LEAVE aliohjelma;
+        SELECT 'Opiskelijaa ei löytynyt'; --tulostaa tekstin
+        LEAVE aliohjelma; --poistuu aliohjelmasta
     END IF;
 
-    SELECT idOpintojakso INTO courseID
-    FROM opintojakso
-    WHERE koodi = course;
+    SELECT idOpintojakso INTO courseID FROM opintojakso WHERE koodi = course;
 
+    -- tarkistetaan, onko kurssia olemassa
     IF courseID = 0 THEN
-        SELECT 'Kurssitunnusta ei löytynyt';
+        SELECT 'Kurssikoodia ei löytynyt';
         LEAVE aliohjelma;
     END IF;
 
+    -- tarkistetaan arvosanan kelpoisuus
     IF arvos < 0 OR arvos > 5 THEN
         SELECT 'Virheellinen arvosana';
         LEAVE aliohjelma;
     END IF;
 
-    INSERT INTO arviointi
-    VALUES (NULL, CURDATE(), arvos, opiskID, courseID);
+    -- kaikki ok, joten tehdään sijoitus
+    INSERT INTO arviointi VALUES (NULL, CURDATE(), arvos, opiskID, courseID);
+
 END aliohjelma//
 
+-- määritellään lopetusmerkiksi uudelllen puolipiste
 DELIMITER ;
