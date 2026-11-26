@@ -1,0 +1,40 @@
+DELIMITER //
+
+CREATE PROCEDURE lisaa_arvio(
+    fn VARCHAR(45),
+    ln VARCHAR(45),
+    course VARCHAR(45),
+    arvos INT
+)
+aliohjelma: BEGIN
+    DECLARE opiskID INT DEFAULT 0;
+    DECLARE courseID INT DEFAULT 0;
+
+    SELECT idOpiskelija INTO opiskID
+    FROM Opiskelija
+    WHERE Etunimi = fn AND Sukunimi = ln;
+
+    IF opiskID = 0 THEN
+        SELECT 'Opiskelijaa ei löytynyt';
+        LEAVE aliohjelma;
+    END IF;
+
+    SELECT idOpintojakso INTO courseID
+    FROM opintojakso
+    WHERE koodi = course;
+
+    IF courseID = 0 THEN
+        SELECT 'Kurssitunnusta ei löytynyt';
+        LEAVE aliohjelma;
+    END IF;
+
+    IF arvos < 0 OR arvos > 5 THEN
+        SELECT 'Virheellinen arvosana';
+        LEAVE aliohjelma;
+    END IF;
+
+    INSERT INTO arviointi
+    VALUES (NULL, CURDATE(), arvos, opiskID, courseID);
+END aliohjelma//
+
+DELIMITER ;
